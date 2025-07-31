@@ -112,7 +112,7 @@ try {
   fs.writeFileSync(
     path.join(standaloneDir, 'package.json'),
     JSON.stringify({
-      name: 'blackbird-portal',
+      name: 'blackbird-portal-fresh',
       version: '0.1.0',
       private: true,
       scripts: {
@@ -145,4 +145,4 @@ if (!fs.existsSync(standaloneDir)) {
 // Create a .ready file to indicate the build is complete
 fs.writeFileSync(path.join(__dirname, '..', '.next', '.ready'), 'ready');
 
-console.log('✅ Build process completed'); 
+console.log('✅ Build process completed');
