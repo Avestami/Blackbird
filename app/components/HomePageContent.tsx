@@ -1,11 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, lazy, Suspense } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import CategoryRing from '@/components/CategoryRing'
 import LogoBird from '@/components/LogoBird'
-import BackgroundNodes from '@/components/BackgroundNodes'
 import { useTheme } from '@/contexts/theme-context'
+
+// Lazy load BackgroundNodes for better performance
+const BackgroundNodes = lazy(() => import('@/components/BackgroundNodes'))
 
 export function HomePageContent() {
   const [isMobile, setIsMobile] = useState(false)
@@ -27,7 +29,9 @@ export function HomePageContent() {
 
   return (
     <>
-      <BackgroundNodes isMobile={isMobile} />
+      <Suspense fallback={null}>
+        <BackgroundNodes isMobile={isMobile} />
+      </Suspense>
       
       {/* Desktop Layout - Full Screen Centering */}
       <div className="hidden md:block fixed inset-0 z-10">
@@ -182,4 +186,4 @@ export function HomePageContent() {
       </motion.div>
     </>
   )
-} 
+}

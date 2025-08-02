@@ -1,5 +1,5 @@
 export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 900; // Cache for 15 minutes
 export const fetchCache = 'force-no-store';
 
 import { NextRequest, NextResponse } from 'next/server'
@@ -120,4 +120,4 @@ export async function GET(request: NextRequest) {
       { status: 500 }
     )
   }
-} 
+}

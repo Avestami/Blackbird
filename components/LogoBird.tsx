@@ -31,39 +31,12 @@ const LogoBird = () => {
           priority
         />
         
-        {/* Enhanced Glow effect - KEEPING THE ANIMATIONS */}
-        <motion.div
-          className="absolute inset-0 rounded-full opacity-10 blur-xl"
-          style={{ 
-            backgroundColor: logoColor,
-            filter: 'blur(20px)'
-          }}
-          animate={{ 
-            opacity: [0.1, 0.2, 0.1],
-            scale: [1, 1.1, 1]
-          }}
-          transition={{
-            duration: 4,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-        
-        {/* Subtle outer glow - KEEPING THE ANIMATIONS */}
-        <motion.div
-          className="absolute inset-0 rounded-full opacity-5 blur-2xl"
-          style={{ 
-            backgroundColor: logoColor,
-            filter: 'blur(30px)'
-          }}
-          animate={{ 
-            opacity: [0.05, 0.1, 0.05],
-            scale: [1.1, 1.3, 1.1]
-          }}
-          transition={{
-            duration: 6,
-            repeat: Infinity,
-            ease: "easeInOut"
+        {/* Static glow effect - removed animation for better performance */}
+        <div
+          className="absolute inset-0 rounded-full opacity-20"
+          style={{
+            background: `radial-gradient(circle, ${theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)'} 0%, transparent 70%)`,
+            filter: 'blur(15px)',
           }}
         />
       </motion.div>
@@ -71,4 +44,4 @@ const LogoBird = () => {
   )
 }
 
-export default LogoBird 
+export default LogoBird

@@ -67,13 +67,13 @@ const BackgroundNodes: React.FC<BackgroundNodesProps> = ({ isMobile = false }) =
         const newArea = canvas.width * canvas.height
         const areaRatio = newArea / oldArea
         
-        if (areaRatio > 1.2) { // If area increased by more than 20%
-          const targetNodeCount = isMobile ? 25 : 60
-          const additionalNodes = Math.floor((areaRatio - 1) * targetNodeCount * 0.5)
+        if (areaRatio > 1.3) { // If area increased by more than 30%
+          const targetNodeCount = isMobile ? 15 : 35
+          const additionalNodes = Math.floor((areaRatio - 1) * targetNodeCount * 0.3)
           
           for (let i = 0; i < additionalNodes; i++) {
-            const baseRadius = Math.random() * 2 + 1
-            const baseOpacity = Math.random() * 0.3 + 0.1
+            const baseRadius = Math.random() * 1.5 + 0.8
+            const baseOpacity = Math.random() * 0.2 + 0.05
             const x = Math.random() * canvas.width
             const y = Math.random() * canvas.height
             
@@ -82,8 +82,8 @@ const BackgroundNodes: React.FC<BackgroundNodesProps> = ({ isMobile = false }) =
               y,
               originalX: x,
               originalY: y,
-              vx: (Math.random() - 0.5) * 0.5,
-              vy: (Math.random() - 0.5) * 0.5,
+              vx: (Math.random() - 0.5) * 0.3,
+              vy: (Math.random() - 0.5) * 0.3,
               radius: baseRadius,
               baseRadius,
               opacity: baseOpacity,
@@ -93,9 +93,9 @@ const BackgroundNodes: React.FC<BackgroundNodesProps> = ({ isMobile = false }) =
         }
         
         // Remove excess nodes if screen got smaller
-        if (areaRatio < 0.8) { // If area decreased by more than 20%
-          const targetNodeCount = isMobile ? 25 : 60
-          const nodesToRemove = Math.floor((1 - areaRatio) * targetNodeCount * 0.3)
+        if (areaRatio < 0.7) { // If area decreased by more than 30%
+          const targetNodeCount = isMobile ? 15 : 35
+          const nodesToRemove = Math.floor((1 - areaRatio) * targetNodeCount * 0.2)
           currentNodes.splice(-nodesToRemove, nodesToRemove)
         }
         
@@ -105,14 +105,14 @@ const BackgroundNodes: React.FC<BackgroundNodesProps> = ({ isMobile = false }) =
     
     resizeCanvas()
 
-    // Create nodes
+    // Create nodes - reduced count for better performance
     const createNodes = () => {
-      const nodeCount = isMobile ? 25 : 60
+      const nodeCount = isMobile ? 15 : 35
       const newNodes: Node[] = []
       
       for (let i = 0; i < nodeCount; i++) {
-        const baseRadius = Math.random() * 2 + 1
-        const baseOpacity = Math.random() * 0.3 + 0.1
+        const baseRadius = Math.random() * 1.5 + 0.8
+        const baseOpacity = Math.random() * 0.2 + 0.05
         const x = Math.random() * canvas.width
         const y = Math.random() * canvas.height
         
@@ -121,8 +121,8 @@ const BackgroundNodes: React.FC<BackgroundNodesProps> = ({ isMobile = false }) =
           y,
           originalX: x,
           originalY: y,
-          vx: (Math.random() - 0.5) * 0.5, // Increased base velocity for visible movement
-          vy: (Math.random() - 0.5) * 0.5, // Increased base velocity for visible movement
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: (Math.random() - 0.5) * 0.3,
           radius: baseRadius,
           baseRadius,
           opacity: baseOpacity,
@@ -282,4 +282,4 @@ const BackgroundNodes: React.FC<BackgroundNodesProps> = ({ isMobile = false }) =
   )
 }
 
-export default BackgroundNodes 
+export default BackgroundNodes

@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic';
-export const revalidate = 0;
-export const fetchCache = 'force-no-store';
+export const revalidate = 600; // Cache for 10 minutes
+export const fetchCache = 'default-cache';
 
 import { NextRequest, NextResponse } from 'next/server'
 import { connectToDatabase } from '@/lib/mongodb'
@@ -109,4 +109,4 @@ export async function GET(request: NextRequest) {
       { status: 500 }
     )
   }
-} 
+}
