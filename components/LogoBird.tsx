@@ -33,17 +33,17 @@ const LogoBird = () => {
         
         {/* Animated glow effect */}
         <motion.div
-          className="absolute inset-0 rounded-full opacity-20"
+          className="absolute inset-0 rounded-full"
           style={{
-            background: `radial-gradient(circle, ${theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)'} 0%, transparent 70%)`,
-            filter: 'blur(15px)',
+            background: `radial-gradient(circle, ${theme === 'dark' ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.2)'} 0%, transparent 70%)`,
+            filter: 'blur(20px)',
           }}
           animate={{
-            scale: [1, 1.1, 1],
-            opacity: [0.2, 0.3, 0.2],
+            scale: [1, 1.2, 1],
+            opacity: [0.6, 0.8, 0.6],
           }}
           transition={{
-            duration: 3,
+            duration: 2.5,
             repeat: Infinity,
             ease: "easeInOut"
           }}
