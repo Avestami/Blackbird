@@ -38,11 +38,34 @@ const CategoryRing = () => {
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ 
               opacity: 1, 
-              scale: 1
+              scale: 1,
+              // Floating animation - each button gets slightly different timing
+              y: [0, -8, 0, -5, 0],
+              x: [0, 3, 0, -2, 0],
+              rotate: [0, 1, 0, -1, 0],
             }}
             transition={{ 
-              opacity: { duration: 0.6, delay: index * 0.1, ease: "easeOut" },
-              scale: { duration: 0.6, delay: index * 0.1, ease: "easeOut" }
+              opacity: { duration: 0.8, delay: index * 0.15, ease: "easeOut" },
+              scale: { duration: 0.8, delay: index * 0.15, ease: "easeOut" },
+              // Continuous floating motion with unique timing per button
+              y: { 
+                duration: 4 + (index * 0.3), 
+                repeat: Infinity, 
+                ease: "easeInOut",
+                delay: index * 0.2 
+              },
+              x: { 
+                duration: 6 + (index * 0.4), 
+                repeat: Infinity, 
+                ease: "easeInOut",
+                delay: index * 0.3 
+              },
+              rotate: { 
+                duration: 8 + (index * 0.2), 
+                repeat: Infinity, 
+                ease: "easeInOut",
+                delay: index * 0.1 
+              }
             }}
             style={{
               left: `calc(50% + ${x}px - 64px)`,
@@ -55,7 +78,18 @@ const CategoryRing = () => {
                 className="group relative cursor-pointer"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                // Removed continuous animations for better performance
+                // Additional subtle floating for the inner element
+                animate={{
+                  scale: [1, 1.02, 1, 0.98, 1],
+                }}
+                transition={{
+                  scale: {
+                    duration: 5 + (index * 0.5),
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: index * 0.4
+                  }
+                }}
               >
                 {/* Glow effect on hover */}
                 <motion.div
@@ -139,4 +173,4 @@ const CategoryRing = () => {
   )
 }
 
-export default CategoryRing
+export default CategoryRing 

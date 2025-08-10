@@ -211,7 +211,7 @@ model ScheduleItem {
 
 model Game {
   id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  title         String
+  title         String   @unique
   description   String
   link          String
   category      String
@@ -222,6 +222,7 @@ model Game {
 
 // Enums
 enum Role {
+  SUPER_ADMIN
   ADMIN
   MODERATOR
   USER

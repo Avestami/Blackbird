@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:4.4
+    container_name: blackbird-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    command: mongod --replSet rs0 --bind_ip_all
+    networks:
+      - blackbird-network
+
+  mongo-init:
+    image: mongo:4.4
+    container_name: blackbird-mongo-init
+    depends_on:
+      - mongodb
+    command: >
+      bash -c "
+        sleep 10 &&
+        mongo --host mongodb:27017 --eval '
+          rs.initiate({
+            _id: \"rs0\",
+            members: [
+              { _id: 0, host: \"mongodb:27017\" }
+            ]
+          })
+        '
+      "
+    networks:
+      - blackbird-network
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: blackbird-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.docker
+    depends_on:
+      - mongodb
+      - mongo-init
+    networks:
+      - blackbird-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  blackbird-network:
+    driver: bridge

@@ -4,7 +4,6 @@ import { Header } from '@/components/layout/header'
 import { AuthProvider } from '@/contexts/auth-context'
 import { ThemeProvider } from '@/contexts/theme-context'
 import { Toaster } from 'sonner'
-import PerformanceMonitor from '@/components/performance/PerformanceMonitor'
 
 // Use CSS fallback fonts instead of Google Fonts for build resilience
 const fontFamily = 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
@@ -30,20 +29,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link 
           href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" 
           rel="stylesheet"
-          media="print" 
-          onLoad="this.media='all'"
+          // Make font loading optional - won't block build if unavailable
         />
-        <noscript>
-          <link 
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" 
-            rel="stylesheet"
-          />
-        </noscript>
       </head>
       <body 
         className="min-h-screen antialiased transition-colors duration-300" 
@@ -62,10 +52,9 @@ export default function RootLayout({
               </main>
             </div>
             <Toaster position="top-right" theme="dark" />
-            <PerformanceMonitor />
           </AuthProvider>
         </ThemeProvider>
       </body>
     </html>
   )
-}
+} 

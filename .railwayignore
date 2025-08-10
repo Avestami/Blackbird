@@ -6,7 +6,8 @@ node_modules
 .export/cache
 __tests__
 docs
+scripts
 *.log
 .env.local
 .env.development
-README.md
+README.md 

@@ -1,5 +1,5 @@
 export const dynamic = 'force-dynamic';
-export const revalidate = 1200; // Cache for 20 minutes
+export const revalidate = 0;
 export const fetchCache = 'force-no-store';
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -66,4 +66,4 @@ export async function DELETE(req: NextRequest) {
   }
   
   return NextResponse.json({ message: 'Roadmap deleted successfully' });
-}
+} 

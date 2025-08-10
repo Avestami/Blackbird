@@ -1,37 +1,44 @@
 'use client'
 
-import { useState, useEffect, lazy, Suspense } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import CategoryRing from '@/components/CategoryRing'
 import LogoBird from '@/components/LogoBird'
+import BackgroundNodes from '@/components/BackgroundNodes'
 import { useTheme } from '@/contexts/theme-context'
-
-// Lazy load BackgroundNodes for better performance
-const BackgroundNodes = lazy(() => import('@/components/BackgroundNodes'))
 
 export function HomePageContent() {
   const [isMobile, setIsMobile] = useState(false)
   const [showCategoryRing, setShowCategoryRing] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const { theme } = useTheme()
 
   useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (!mounted || typeof window === 'undefined') return
+    
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768)
     }
     checkMobile()
     window.addEventListener('resize', checkMobile)
     return () => window.removeEventListener('resize', checkMobile)
-  }, [])
+  }, [mounted])
 
   const handleLogoClick = () => {
     setShowCategoryRing(!showCategoryRing)
   }
 
+  if (!mounted) {
+    return null // Prevent SSR mismatch
+  }
+
   return (
     <>
-      <Suspense fallback={null}>
-        <BackgroundNodes isMobile={isMobile} />
-      </Suspense>
+      <BackgroundNodes isMobile={isMobile} />
       
       {/* Desktop Layout - Full Screen Centering */}
       <div className="hidden md:block fixed inset-0 z-10">

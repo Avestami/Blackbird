@@ -173,14 +173,28 @@ export async function POST(request: NextRequest) {
 
     // Store session in database
     try {
-      await Session.create({
+      console.log('[Login] Creating session:', {
+        userId: user._id.toString(),
+        tokenPreview: sessionToken.substring(0, 8) + '...',
+        expiresAt: expiresAt.toISOString(),
+        createdAt: new Date().toISOString()
+      })
+      
+      const sessionDoc = await Session.create({
         userId: user._id.toString(),
         token: sessionToken,
         expiresAt: expiresAt,
         createdAt: new Date()
       })
+      
+      console.log('[Login] Session created successfully:', {
+        sessionId: sessionDoc._id.toString(),
+        userId: sessionDoc.userId,
+        tokenPreview: sessionDoc.token.substring(0, 8) + '...',
+        expiresAt: sessionDoc.expiresAt.toISOString()
+      })
     } catch (sessionError) {
-      console.error('Session creation error:', sessionError)
+      console.error('[Login] Session creation error:', sessionError)
       return NextResponse.json(
         { error: 'Failed to create session' },
         { status: 500 }
@@ -192,29 +206,15 @@ export async function POST(request: NextRequest) {
       updatedAt: new Date() 
     })
 
-    // Get request host for cookie domain
-    const host = request.headers.get('host') || ''
-    
-    // Determine if we're in production
-    const isProduction = process.env.NODE_ENV === 'production'
-    
-    // Set cookie options - Railway compatible
-    const cookieOptions = {
-      name: 'session_token',
-      value: sessionToken,
-      expires: expiresAt,
-      path: '/',
+    // Set session cookie with debug logging
+    console.log('[Login] Setting session cookie:', {
+      secure: false, // Force secure to false for HTTP
       httpOnly: true,
-      secure: isProduction,
-      sameSite: isProduction ? 'none' as const : 'lax' as const,
-      // Remove domain setting to let browser handle it automatically
-    }
+      sameSite: 'lax',
+      maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    })
     
-    // Set session cookie
-    cookies().set(cookieOptions)
-    
-    // Create response with user data
-    return NextResponse.json({
+    const response = NextResponse.json({
       user: {
         id: user._id.toString(),
         email: user.email,
@@ -226,6 +226,16 @@ export async function POST(request: NextRequest) {
       redirect: (user.role === 'ADMIN' || user.role === 'SUPER_ADMIN') ? '/admin' : '/dashboard'
     })
 
+    response.cookies.set('session_token', sessionToken, {
+      httpOnly: true,
+      secure: false, // Force secure to false for HTTP
+      sameSite: 'lax',
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+      path: '/'
+    })
+    
+    return response
+
   } catch (error) {
     console.error('Login error:', error)
     return NextResponse.json(
@@ -233,4 +243,4 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     )
   }
-} 
+}

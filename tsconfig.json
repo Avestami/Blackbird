@@ -1,12 +1,6 @@
 {
   "compilerOptions": {
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "es6",
-      "es2015",
-      "es2017"
-    ],
+    "lib": ["dom", "dom.iterable", "es6", "es2017"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -25,22 +19,12 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["./*"]
     },
-    "target": "es2015",
+    "target": "es2017",
     "downlevelIteration": true,
-    "forceConsistentCasingInFileNames": true,
-    "strictNullChecks": true
+    "forceConsistentCasingInFileNames": true
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules", ".next", "out", "dist", "build"]
 }

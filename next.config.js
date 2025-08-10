@@ -1,67 +1,48 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // 🔧 Standalone output is disabled intentionally (normal build for Docker)
+  // Do NOT enable 'standalone' unless you plan to copy .next/standalone in Docker
+
+  // ✅ Enable compression in production
+  compress: process.env.NODE_ENV === 'production',
+
+  // ✅ Allowed external image sources
   images: {
-    domains: ['supabase.co', 'avatars.githubusercontent.com', 'lh3.googleusercontent.com'],
-    unoptimized: false,
-    formats: ['image/webp', 'image/avif'],
-    minimumCacheTTL: 60,
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    domains: ['localhost', 'blackbird-portal.railway.app'],
   },
+
+  // ✅ Strict mode for build (disable skipping errors)
   typescript: {
-    ignoreBuildErrors: false, // Enable type checking for better error detection
+    ignoreBuildErrors: false,
   },
   eslint: {
-    ignoreDuringBuilds: false, // Enable ESLint for better code quality
+    ignoreDuringBuilds: false,
   },
+
+  // ✅ Use SWC for faster and smaller builds
   swcMinify: true,
-  poweredByHeader: false,
-  reactStrictMode: true,
+
+  // ✅ Prevent build-time crash from clientModules bug
   experimental: {
-    optimizeCss: true,
-    scrollRestoration: true,
+    instrumentationHook: false,
+    // 👇 OPTIONAL: disable serverActions if you don’t use them
+    // serverActions: false
   },
-  env: {
-    NEXTAUTH_URL: process.env.NEXTAUTH_URL,
-    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
-    DATABASE_URL: process.env.DATABASE_URL,
-    CSRF_SECRET: process.env.CSRF_SECRET,
-  },
+
+  // ✅ Set headers for API routes (like no-cache)
   async headers() {
     return [
       {
-        source: '/(.*)',
-        headers: [
-          {
-            key: 'X-Frame-Options',
-            value: 'DENY',
-          },
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
-          },
-          {
-            key: 'Referrer-Policy',
-            value: 'origin-when-cross-origin',
-          },
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-      {
-        source: '/api/(.*)',
+        source: '/api/:path*',
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=300, s-maxage=300',
+            value: 'no-store, max-age=0',
           },
         ],
       },
     ];
   },
-  compress: true,
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
